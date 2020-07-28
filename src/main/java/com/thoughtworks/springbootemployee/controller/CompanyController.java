@@ -45,7 +45,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    public Map<Object, Object> addCompany(Company company) {
+    public Map<Object, Object> addCompany(@RequestBody Company company) {
         HashMap<Object, Object> resultMap = new HashMap<>(2);
         companies.add(company);
         resultMap.put("status", 200);
@@ -54,9 +54,11 @@ public class CompanyController {
     }
 
     @PutMapping("companies/{id}")
-    public Company updateCompany(@PathVariable int id) {
-
-        return companies.stream().filter(company -> company.getId() == id).findAny().orElse(null);
+    public Company updateCompany(@PathVariable int id, @RequestBody Company company2) {
+        Company company = companies.stream().filter(company1 -> company1.getId() == id).findAny().orElse(null);
+        companies.remove(company);
+        companies.add(company2);
+        return companies.stream().filter(company1 -> company1.getId() == id).findAny().orElse(null);
     }
 
     @DeleteMapping("companies/{id}")

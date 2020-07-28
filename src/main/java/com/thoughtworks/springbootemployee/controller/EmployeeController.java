@@ -4,6 +4,7 @@ import com.thoughtworks.springbootemployee.entity.Employee;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -18,7 +19,7 @@ public class EmployeeController {
         if (page != null && pageSize != null) {
             return employees.subList(page * --pageSize, page * pageSize);
         } else if (gender != null) {
-            return employees.stream().filter(employee -> employee.getGender() == gender).collect(Collectors.toList());
+            return employees.stream().filter(employee -> Objects.equals(employee.getGender(), gender)).collect(Collectors.toList());
         }
         return employees;
     }
@@ -29,12 +30,17 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public boolean addEmployee(Employee employee) {
+    public boolean addEmployee(@RequestBody Employee employee) {
         return employees.add(employee);
     }
-//    todo
-//    @PutMapping("{id}")
-//    public Employee
+
+    @PutMapping("{id}")
+    public Employee updateEmployee(@PathVariable int id, @RequestBody Employee employee2) {
+        Employee employee = employees.stream().filter(employee1 -> employee1.getId() == id).findAny().orElse(null);
+        employees.remove(employee);
+        employees.add(employee2);
+        return employees.stream().filter(employee1 -> employee1.getId() == id).findAny().orElse(null);
+    }
 
     @DeleteMapping("{id}")
     public boolean deleteEmployee(@PathVariable int id) {
