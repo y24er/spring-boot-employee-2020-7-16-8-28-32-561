@@ -4,10 +4,31 @@ import java.util.List;
 
 public class Company {
     private int id;
+    private int employeesNums;
     private List<Employee> employees;
+    private String companyName;
 
-    public Company(int id) {
+    public Company(int id, int employeesNums, List<Employee> employees, String companyName) {
         this.id = id;
+        this.employeesNums = employeesNums;
+        this.employees = employees;
+        this.companyName = companyName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public int getEmployeesNums() {
+        return employeesNums;
+    }
+
+    public void setEmployeesNums(int employeesNums) {
+        this.employeesNums = employeesNums;
     }
 
     public int getId() {
