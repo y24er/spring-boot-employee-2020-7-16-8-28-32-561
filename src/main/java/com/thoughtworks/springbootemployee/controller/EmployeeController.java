@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee.controller;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-    public static List<Employee> employees;
+    public static List<Employee> employees = new ArrayList<>();
 
     @GetMapping
     public List<Employee> getEmployee(Integer page, Integer pageSize, String gender) {
