@@ -19,6 +19,7 @@ public class CompanyController {
         companies.add(new Company(2));
         return companies;
     }
+    //ceshi
     @GetMapping("{id}")
     public Company getCompany(@PathVariable int id) {
         Company company=new Company(id);
