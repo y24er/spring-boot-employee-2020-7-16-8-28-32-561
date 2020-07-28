@@ -13,10 +13,16 @@ import java.util.List;
 @RequestMapping("/companies")
 public class CompanyController {
     @GetMapping
-    public List<Company> getCompanyList() {
+    public List<Company> getCompanies() {
         List<Company> companies=new ArrayList<>();
         companies.add(new Company(1));
         companies.add(new Company(2));
         return companies;
     }
+    @GetMapping("{id}")
+    public Company getCompany(@PathVariable int id) {
+        Company company=new Company(id);
+        return company;
+    }
+
 }
