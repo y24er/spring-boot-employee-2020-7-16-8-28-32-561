@@ -46,4 +46,14 @@ public class CompanyServiceTest {
         //then
         assertEquals(mockedCompanies.get(0), company);
     }
+
+    @Test
+    void should_return_employees_when_get_employees_given_company_id() {
+        //given
+        given(mockedCompanyRepository.getEmployees(1)).willReturn(mockedCompanies.get(0).getEmployees());
+        //when
+        List<Employee> employees = companyService.getEmployees(1);
+        //then
+        assertEquals(mockedCompanies.get(0).getEmployees(), employees);
+    }
 }

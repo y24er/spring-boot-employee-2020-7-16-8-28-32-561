@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.entity.Company;
+import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,9 @@ public class CompanyService {
 
     public Company getCompany(int ID) {
         return companyRepository.getCompany(ID);
+    }
+
+    public List<Employee> getEmployees(int ID) {
+        return companyRepository.getEmployees(ID);
     }
 }
