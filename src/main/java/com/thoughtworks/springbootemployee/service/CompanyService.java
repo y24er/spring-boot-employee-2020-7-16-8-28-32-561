@@ -11,8 +11,6 @@ import java.util.List;
 public class CompanyService {
     private CompanyRepository companyRepository;
 
-
-
     public CompanyService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
@@ -30,7 +28,8 @@ public class CompanyService {
     }
 
     public Company addCompany(Company company) {
-        return companyRepository.save(company);
+        companyRepository.save(company);
+        return company;
     }
 
     public Company updateCompany(Company company) {
