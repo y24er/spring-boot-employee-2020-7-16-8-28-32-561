@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -30,8 +29,8 @@ public class EmployeeService {
         return employee;
     }
 
-    public List<Employee> getEmployeesByGender(String female) {
-        return employeeRepository.findAll().stream().filter(employee -> female.equals(employee.getGender())).collect(Collectors.toList());
+    public List<Employee> getEmployeesByGender(String gender) {
+        return employeeRepository.findByGender(gender);
     }
 
     public Employee updateEmployee(int employeeID, Employee employee) {

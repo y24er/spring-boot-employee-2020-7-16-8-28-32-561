@@ -59,7 +59,7 @@ public class EmployeeServiceTest {
     @Test
     void should_return_employees_when_get_employees_by_gender_given_gender() {
         //given
-        when(employeeRepository.findAll()).thenReturn(asList(new Employee(1, "oocl1", 18, "female", 10000.0), new Employee(2, "oocl2", 18, "male", 10000.0)));
+        when(employeeRepository.findByGender("female")).thenReturn(asList(new Employee(1, "oocl1", 18, "female", 10000.0)));
         //when
         List<Employee> employees = employeeService.getEmployeesByGender("female");
         //then

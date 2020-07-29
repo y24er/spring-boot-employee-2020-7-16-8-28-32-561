@@ -28,6 +28,10 @@ public class EmployeeController {
 
     @GetMapping
     public List<Employee> getEmployee(Integer page, Integer pageSize, String gender) {
+        if (gender != null) {
+            return employeeService.getEmployeesByGender(gender);
+        }
+
         return employeeService.getAllEmployees();
     }
 
