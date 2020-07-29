@@ -10,4 +10,8 @@ public class CompanyRepository {
     public List<Company> getCompanies() {
         return null;
     }
+
+    public Company getCompany(int ID) {
+        return null;
+    }
 }
