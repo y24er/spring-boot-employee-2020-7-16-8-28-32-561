@@ -2,12 +2,12 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/companies")
@@ -22,9 +22,9 @@ public class CompanyController {
         companies.add(new Company(1, 2, employees, "alibaba"));
         companies.add(new Company(2, 2, employees, "alibaba2"));
         if (page != null && pageSize != null) {
-            return companies.subList(page * --pageSize, page * pageSize);
+            return companies.subList(--page * pageSize, ++page * pageSize);
         }
-        return companies;
+        return CompanyController.companies;
     }
 
     @GetMapping("{id}")
@@ -45,15 +45,15 @@ public class CompanyController {
     }
 
     @PostMapping
-    public Map<Object, Object> addCompany(@RequestBody Company company) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public Company addCompany(@RequestBody Company company) {
         HashMap<Object, Object> resultMap = new HashMap<>(2);
         companies.add(company);
-        resultMap.put("status", 200);
-        resultMap.put("message", "添加成功");
-        return resultMap;
+        return company;
     }
 
     @PutMapping("companies/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
     public Company updateCompany(@PathVariable int id, @RequestBody Company company2) {
         Company company = companies.stream().filter(company1 -> company1.getId() == id).findAny().orElse(null);
         companies.remove(company);
@@ -62,6 +62,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("companies/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public boolean deleteCompany(@PathVariable int id) {
         Company company = companies.stream().filter(company1 -> company1.getId() == id).findAny().orElse(null);
         return companies.remove(company);
