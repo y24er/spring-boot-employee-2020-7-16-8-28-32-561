@@ -96,6 +96,5 @@ public class EmployeeServiceTest {
         //then
         assertEquals("delete success", result);
         verify(employeeRepository).deleteById(1);
-
     }
 }
