@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -17,6 +16,7 @@ import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -85,5 +85,17 @@ public class EmployeeServiceTest {
         Employee updatedEmployee = employeeService.updateEmployee(4, new Employee(4, "oocl1", 20, "female", 20000.0));
         //then
         assertNull(updatedEmployee);
+    }
+
+    @Test
+    void should_return_employee_when_delete_given_employee_id() {
+        //given
+        int employee_id = 1;
+        //when
+        String result = employeeService.deleteEmployee(employee_id);
+        //then
+        assertEquals("delete success", result);
+        verify(employeeRepository).deleteById(1);
+
     }
 }
