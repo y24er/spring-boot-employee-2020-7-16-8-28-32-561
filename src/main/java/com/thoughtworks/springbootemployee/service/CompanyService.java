@@ -12,23 +12,38 @@ public class CompanyService {
     private CompanyRepository companyRepository;
 
 
+
     public CompanyService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
 
     public List<Company> getCompanies() {
-        return companyRepository.getCompanies();
+        return companyRepository.findAll();
     }
 
     public Company getCompany(int ID) {
-        return companyRepository.getCompany(ID);
+        return companyRepository.findById(ID).get();
     }
 
     public List<Employee> getEmployees(int ID) {
-        return companyRepository.getEmployees(ID);
+        return companyRepository.findById(ID).get().getEmployees();
     }
 
     public Company addCompany(Company company) {
-        return companyRepository.addCompany(company);
+        return companyRepository.save(company);
+    }
+
+    public Company updateCompany(Company company) {
+        Company company1 = companyRepository.findById(company.getId()).get();
+        if (company.getCompanyName() != null) {
+            company1.setCompanyName(company.getCompanyName());
+        }
+        if (company.getEmployees() != null) {
+            company1.setEmployees(company.getEmployees());
+        }
+        if (company.getEmployeesNums() != 0) {
+            company1.setEmployeesNums(company.getEmployeesNums());
+        }
+        return companyRepository.save(company);
     }
 }

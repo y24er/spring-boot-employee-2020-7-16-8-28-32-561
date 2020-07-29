@@ -1,10 +1,15 @@
 package com.thoughtworks.springbootemployee.entity;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 public class Company {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int employeesNums;
+    @Transient
     private List<Employee> employees;
     private String companyName;
 

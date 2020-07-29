@@ -2,17 +2,20 @@ package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
+import com.thoughtworks.springbootemployee.service.CompanyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
 @RequestMapping("/companies")
 public class CompanyController {
     static List<Company> companies = new ArrayList<>();
+    @Autowired
+    CompanyService companyService;
 
     @GetMapping
     public List<Company> getCompanies(Integer page, Integer pageSize) {
@@ -47,9 +50,7 @@ public class CompanyController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Company addCompany(@RequestBody Company company) {
-        HashMap<Object, Object> resultMap = new HashMap<>(2);
-        companies.add(company);
-        return company;
+        return companyService.addCompany(company);
     }
 
     @PutMapping("companies/{id}")
@@ -67,5 +68,6 @@ public class CompanyController {
         Company company = companies.stream().filter(company1 -> company1.getId() == id).findAny().orElse(null);
         return companies.remove(company);
     }
+
 
 }
