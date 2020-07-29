@@ -18,7 +18,7 @@ public class CompanyServiceTest {
     void should_return_companies_when_get_companies() {
         //given
         CompanyRepository mockedCompanyRepository = mock(CompanyRepository.class);
-        CompanyService companyService = new CompanyService();
+        CompanyService companyService = new CompanyService(mockedCompanyRepository);
         List<Company> mockedCompanies = new ArrayList<>();
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "alibaba1", 20, "male", 6000.0));
