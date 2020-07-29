@@ -27,4 +27,8 @@ public class CompanyService {
     public List<Employee> getEmployees(int ID) {
         return companyRepository.getEmployees(ID);
     }
+
+    public Company addCompany(Company company) {
+        return companyRepository.addCompany(company);
+    }
 }

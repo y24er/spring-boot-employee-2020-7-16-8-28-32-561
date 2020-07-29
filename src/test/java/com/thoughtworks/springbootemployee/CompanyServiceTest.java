@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -55,5 +56,15 @@ public class CompanyServiceTest {
         List<Employee> employees = companyService.getEmployees(1);
         //then
         assertEquals(mockedCompanies.get(0).getEmployees(), employees);
+    }
+
+    @Test
+    void should_return_company_when_add_company_given_company() {
+        //given
+        given(mockedCompanyRepository.addCompany(any())).willReturn(mockedCompanies.get(0));
+        //when
+        Company company = companyService.addCompany(mockedCompanies.get(0));
+        //then
+        assertEquals(mockedCompanies.get(0), company);
     }
 }
