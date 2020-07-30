@@ -31,7 +31,9 @@ public class EmployeeController {
         if (gender != null) {
             return employeeService.getEmployeesByGender(gender);
         }
-
+        if (page != null && pageSize != null) {
+            return employeeService.getEmployees(page, pageSize);
+        }
         return employeeService.getAllEmployees();
     }
 
