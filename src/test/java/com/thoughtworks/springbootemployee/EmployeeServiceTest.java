@@ -15,7 +15,6 @@ import java.util.Optional;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -49,7 +48,7 @@ public class EmployeeServiceTest {
     @Test
     void should_return_employee_when_add_employee_given_employee() {
         //given
-        when(employeeRepository.save(any())).thenReturn(new Employee(1, "oocl1", 18, "female", 10000.0));
+        when(employeeRepository.save(new Employee(1, "oocl1", 18, "female", 10000.0))).thenReturn(new Employee(1, "oocl1", 18, "female", 10000.0));
         //when
         Employee employee = employeeService.addEmployee(new Employee(1, "oocl1", 18, "female", 10000.0));
         //then
