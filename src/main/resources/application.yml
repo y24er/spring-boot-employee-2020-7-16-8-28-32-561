@@ -6,6 +6,12 @@ spring:
     console:
       path: /h2-console
       enabled: true
+  jpa:
+    database: h2
+    hibernate:
+      ddl-auto: none
 
+  flyway:
+    location: classpath:db/migration
 server:
   port: 8081

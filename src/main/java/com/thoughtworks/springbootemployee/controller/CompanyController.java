@@ -5,7 +5,15 @@ import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +27,15 @@ public class CompanyController {
 
     @GetMapping
     public List<Company> getCompanies(Integer page, Integer pageSize) {
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "alibaba1", 20, "male", 6000.0));
-        employees.add(new Employee(2, "alibaba2", 19, "male", 8000.0));
-        companies.add(new Company(1, 2, employees, "alibaba"));
-        companies.add(new Company(2, 2, employees, "alibaba2"));
-        if (page != null && pageSize != null) {
-            return companies.subList(--page * pageSize, ++page * pageSize);
-        }
-        return CompanyController.companies;
+//        List<Employee> employees = new ArrayList<>();
+//        employees.add(new Employee(1, "alibaba1", 20, "male", 6000.0));
+//        employees.add(new Employee(2, "alibaba2", 19, "male", 8000.0));
+//        companies.add(new Company(1, 2, employees, "alibaba"));
+//        companies.add(new Company(2, 2, employees, "alibaba2"));
+//        if (page != null && pageSize != null) {
+//            return companies.subList(--page * pageSize, ++page * pageSize);
+//        }
+        return companyService.getCompanies();
     }
 
     @GetMapping("{id}")

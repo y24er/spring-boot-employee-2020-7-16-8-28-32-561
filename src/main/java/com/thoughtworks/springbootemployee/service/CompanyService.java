@@ -28,8 +28,7 @@ public class CompanyService {
     }
 
     public Company addCompany(Company company) {
-        companyRepository.save(company);
-        return company;
+        return companyRepository.save(company);
     }
 
     public Company updateCompany(Company company) {
@@ -40,8 +39,8 @@ public class CompanyService {
         if (company.getEmployees() != null) {
             company1.setEmployees(company.getEmployees());
         }
-        if (company.getEmployeesNums() != 0) {
-            company1.setEmployeesNums(company.getEmployeesNums());
+        if (company.getEmployeeNums() != 0) {
+            company1.setEmployeeNums(company.getEmployeeNums());
         }
         return companyRepository.save(company);
     }

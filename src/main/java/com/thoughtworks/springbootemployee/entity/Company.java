@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.entity;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,14 +15,14 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int employeesNums;
-    @OneToMany
+    private int employeeNums;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
     private List<Employee> employees;
     private String companyName;
 
     public Company(int id, int employeesNums, List<Employee> employees, String companyName) {
         this.id = id;
-        this.employeesNums = employeesNums;
+        this.employeeNums = employeesNums;
         this.employees = employees;
         this.companyName = companyName;
     }
@@ -37,12 +38,12 @@ public class Company {
         this.companyName = companyName;
     }
 
-    public int getEmployeesNums() {
-        return employeesNums;
+    public int getEmployeeNums() {
+        return employeeNums;
     }
 
-    public void setEmployeesNums(int employeesNums) {
-        this.employeesNums = employeesNums;
+    public void setEmployeeNums(int employeeNums) {
+        this.employeeNums = employeeNums;
     }
 
     public int getId() {

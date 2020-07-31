@@ -15,7 +15,7 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,24 +55,22 @@ public class CompanyServiceTest {
         assertEquals(2, employees.size());
     }
 
-//    @Test
-//    void should_return_company_when_add_company_given_company() {
-//        //given
-//        when(companyRepository.findById(1)).thenReturn(Optional.of(new Company(1, 2, asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)), "oocl")));
-//        //when
-//        Company company = companyService.addCompany(new Company(1, 2, asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)), "oocl"));
-//        //then
-//        assertEquals(1, company.getId());
-//    }
+    @Test
+    void should_return_company_when_add_company_given_company() {
+        //given
+        when(companyRepository.save(any())).thenReturn(new Company(1, 2, asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)), "oocl"));
+        //when
+        Company company = companyService.addCompany(new Company(1, 2, asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)), "oocl"));
+        //then
+        assertEquals(1, company.getId());
+    }
 
 //    @Test
 //    void should_return_updated_company_when_update_company_given_company() {
 //        //given
-//        given(mockedCompanyRepository.getCompany(any())).willReturn(mockedCompanies.get(0));
-//
-//        given(mockedCompanyRepository.update(any())).willReturn(mockedCompanies.get(0));
+//        when(companyRepository.findById(1)).thenReturn(Optional.of(new Company(1, 2, asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)), "oocl")));
 //        //when
-//        Company company = companyService.updateCompany(mockedCompanies.get(0));
+//        Company company = companyService.updateCompany();
 //        //then
 //        assertEquals(mockedCompanies.get(0), company);
 //    }
