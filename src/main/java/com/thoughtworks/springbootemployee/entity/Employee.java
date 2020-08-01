@@ -1,10 +1,6 @@
 package com.thoughtworks.springbootemployee.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 
 @Entity
 public class Employee {
@@ -78,15 +74,7 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Employee(int id) {
-        this.id = id;
-    }
-
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
