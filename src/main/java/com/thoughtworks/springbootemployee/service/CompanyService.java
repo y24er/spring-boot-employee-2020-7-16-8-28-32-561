@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.Exception.NotFoundCompanyException;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -24,16 +25,20 @@ public class CompanyService {
     }
 
     public Company getCompany(int ID) {
-        Optional result = companyRepository.findById(ID);
-        if (result != null) {
-            return (Company) result.get();
-        } else {
-            return null;
+        Optional<Company> result = companyRepository.findById(ID);
+        if (!result.isPresent()) {
+            throw new NotFoundCompanyException();
         }
+        return result.get();
+
     }
 
     public List<Employee> getEmployees(int ID) {
-        return companyRepository.findById(ID).get().getEmployees();
+        Optional<Company> result = companyRepository.findById(ID);
+        if (!result.isPresent()) {
+            throw new NotFoundCompanyException();
+        }
+        return result.get().getEmployees();
     }
 
     public Company addCompany(Company company) {
@@ -48,25 +53,27 @@ public class CompanyService {
     }
 
     public Company updateCompany(Integer companyId, Company company) {
-        Optional result = companyRepository.findById(companyId);
-        if (result != null) {
-            Company oldCompany = (Company) result.get();
-            if (company.getCompanyName() != null) {
-                oldCompany.setCompanyName(company.getCompanyName());
-            }
-            if (company.getEmployees() != null) {
-                oldCompany.setEmployees(company.getEmployees());
-            }
-            if (company.getEmployeesNumber() != 0) {
-                oldCompany.setEmployeesNumber(company.getEmployeesNumber());
-            }
-            return companyRepository.save(oldCompany);
+        Optional<Company> result = companyRepository.findById(companyId);
+        if (!result.isPresent()) {
+            throw new NotFoundCompanyException();
         }
-        return null;
-
+        Company oldCompany = result.get();
+        if (company.getCompanyName() != null) {
+            oldCompany.setCompanyName(company.getCompanyName());
+        }
+        if (company.getEmployees() != null) {
+            oldCompany.setEmployees(company.getEmployees());
+        }
+        if (company.getEmployeesNumber() != 0) {
+            oldCompany.setEmployeesNumber(company.getEmployeesNumber());
+        }
+        return companyRepository.save(oldCompany);
     }
 
     public void deleteCompanyById(int companyId) {
+        if (!companyRepository.existsById(companyId)) {
+            throw new NotFoundCompanyException();
+        }
         companyRepository.deleteById(companyId);
     }
 

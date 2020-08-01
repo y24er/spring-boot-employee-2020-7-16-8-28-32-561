@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.Exception.NotFoundEmployeeException;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
@@ -25,17 +26,19 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeByID(int employeeID) {
-        Optional<Employee> optional = employeeRepository.findById(employeeID);
-        return optional.isPresent() ? optional.get() : null;
+        Optional<Employee> result = employeeRepository.findById(employeeID);
+        if (!result.isPresent()) {
+            throw new NotFoundEmployeeException();
+        }
+        return result.get();
     }
 
     public Employee addEmployee(Employee employee) {
         int companyId = employee.getCompanyId();
-        if (companyRepository.existsById(companyId)) {
-            return employeeRepository.save(employee);
-        } else {
-            return null;
+        if (!companyRepository.existsById(companyId)) {
+            throw new NotFoundEmployeeException();
         }
+        return employeeRepository.save(employee);
     }
 
     public List<Employee> getEmployeesByGender(String gender) {
@@ -44,28 +47,30 @@ public class EmployeeService {
 
     public Employee updateEmployee(int employeeID, Employee employee) {
         Optional result = employeeRepository.findById(employeeID);
-        if (result != null) {
-            Employee oldEmployee = (Employee) result.get();
-            if (employee.getName() != null) {
-                oldEmployee.setName(employee.getName());
-            }
-            if (employee.getAge() != 0) {
-                oldEmployee.setAge(employee.getAge());
-            }
-            if (employee.getGender() != null) {
-                oldEmployee.setGender(employee.getGender());
-            }
-            if (employee.getSalary() != null) {
-                oldEmployee.setSalary(employee.getSalary());
-            }
-            System.out.println(oldEmployee);
-            Employee updatedEmployee = employeeRepository.save(oldEmployee);
-            return updatedEmployee;
+        if (!result.isPresent()) {
+            throw new NotFoundEmployeeException();
         }
-        return null;
+        Employee oldEmployee = (Employee) result.get();
+        if (employee.getName() != null) {
+            oldEmployee.setName(employee.getName());
+        }
+        if (employee.getAge() != 0) {
+            oldEmployee.setAge(employee.getAge());
+        }
+        if (employee.getGender() != null) {
+            oldEmployee.setGender(employee.getGender());
+        }
+        if (employee.getSalary() != null) {
+            oldEmployee.setSalary(employee.getSalary());
+        }
+        Employee updatedEmployee = employeeRepository.save(oldEmployee);
+        return updatedEmployee;
     }
 
     public void deleteEmployee(int employeeID) {
+        if (!employeeRepository.existsById(employeeID)) {
+            throw new NotFoundEmployeeException();
+        }
         employeeRepository.deleteById(employeeID);
     }
 
