@@ -1,12 +1,7 @@
 package com.thoughtworks.springbootemployee.entity;
 
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 
@@ -15,16 +10,16 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int employeeNums;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
-    private List<Employee> employees;
     private String companyName;
+    private int employeesNumber;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "companyId")
+    private List<Employee> employees;
 
-    public Company(int id, int employeesNums, List<Employee> employees, String companyName) {
+    public Company(int id, String companyName, int employeesNumber, List<Employee> employees) {
         this.id = id;
-        this.employeeNums = employeesNums;
-        this.employees = employees;
         this.companyName = companyName;
+        this.employeesNumber = employeesNumber;
+        this.employees = employees;
     }
 
     public Company() {
@@ -38,20 +33,16 @@ public class Company {
         this.companyName = companyName;
     }
 
-    public int getEmployeeNums() {
-        return employeeNums;
+    public int getEmployeesNumber() {
+        return employeesNumber;
     }
 
-    public void setEmployeeNums(int employeeNums) {
-        this.employeeNums = employeeNums;
+    public void setEmployeesNumber(int employeesNumber) {
+        this.employeesNumber = employeesNumber;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public List<Employee> getEmployees() {
