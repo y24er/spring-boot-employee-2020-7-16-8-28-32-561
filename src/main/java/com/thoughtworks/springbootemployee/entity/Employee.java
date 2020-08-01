@@ -11,7 +11,6 @@ public class Employee {
     private int age;
     private String gender;
     private Double salary;
-    @JoinColumn
     private int companyId;
 
     public int getCompanyId() {
