@@ -64,9 +64,6 @@ public class CompanyService {
         if (company.getEmployees() != null) {
             oldCompany.setEmployees(company.getEmployees());
         }
-        if (company.getEmployeesNumber() != 0) {
-            oldCompany.setEmployeesNumber(company.getEmployeesNumber());
-        }
         return companyRepository.save(oldCompany);
     }
 

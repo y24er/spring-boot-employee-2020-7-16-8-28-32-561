@@ -11,14 +11,12 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String companyName;
-    private int employeesNumber;
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "companyId")
     private List<Employee> employees;
 
-    public Company(int id, String companyName, int employeesNumber, List<Employee> employees) {
+    public Company(int id, String companyName, List<Employee> employees) {
         this.id = id;
         this.companyName = companyName;
-        this.employeesNumber = employeesNumber;
         this.employees = employees;
     }
 
@@ -31,14 +29,6 @@ public class Company {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public int getEmployeesNumber() {
-        return employeesNumber;
-    }
-
-    public void setEmployeesNumber(int employeesNumber) {
-        this.employeesNumber = employeesNumber;
     }
 
     public int getId() {
