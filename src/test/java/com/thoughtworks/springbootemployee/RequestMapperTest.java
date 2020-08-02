@@ -2,7 +2,7 @@ package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.dto.CompanyRequestDTO;
 import com.thoughtworks.springbootemployee.entity.Company;
-import com.thoughtworks.springbootemployee.Mapper.RequestMapper;
+import com.thoughtworks.springbootemployee.mapper.RequestMapper;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
