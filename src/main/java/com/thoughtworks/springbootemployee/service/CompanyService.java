@@ -1,6 +1,8 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.Exception.NotFoundCompanyException;
+import com.thoughtworks.springbootemployee.Mapper.RequestMapper;
+import com.thoughtworks.springbootemployee.dto.CompanyRequestDTO;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -15,9 +17,12 @@ import java.util.Optional;
 @Service
 public class CompanyService {
     private CompanyRepository companyRepository;
+    //    @Autowired
+    private RequestMapper requestMapper;
 
-    public CompanyService(CompanyRepository companyRepository) {
+    public CompanyService(CompanyRepository companyRepository, RequestMapper requestMapper) {
         this.companyRepository = companyRepository;
+        this.requestMapper = requestMapper;
     }
 
     public List<Company> getCompanies() {
@@ -34,14 +39,14 @@ public class CompanyService {
     }
 
     public List<Employee> getEmployees(int ID) {
-        Optional<Company> result = companyRepository.findById(ID);
-        if (!result.isPresent()) {
+        Company company = companyRepository.findById(ID).orElseThrow(() -> {
             throw new NotFoundCompanyException();
-        }
-        return result.get().getEmployees();
+        });
+        return company.getEmployees();
     }
 
-    public Company addCompany(Company company) {
+    public Company addCompany(CompanyRequestDTO companyRequestDTO) {
+        Company company = requestMapper.toCompany(companyRequestDTO);
         List<Employee> employees = company.getEmployees();
         company.setEmployees(Collections.emptyList());
         Company savedCompany = companyRepository.save(company);
@@ -52,12 +57,11 @@ public class CompanyService {
         return companyRepository.save(savedCompany);
     }
 
-    public Company updateCompany(Integer companyId, Company company) {
-        Optional<Company> result = companyRepository.findById(companyId);
-        if (!result.isPresent()) {
+    public Company updateCompany(Integer companyId, CompanyRequestDTO companyRequestDTO) {
+        Company company = requestMapper.toCompany(companyRequestDTO);
+        Company oldCompany = companyRepository.findById(companyId).orElseThrow(() -> {
             throw new NotFoundCompanyException();
-        }
-        Company oldCompany = result.get();
+        });
         if (company.getCompanyName() != null) {
             oldCompany.setCompanyName(company.getCompanyName());
         }

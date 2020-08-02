@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.dto.CompanyRequestDTO;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
@@ -41,13 +42,13 @@ public class CompanyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Company addCompany(@RequestBody Company company) {
-        return companyService.addCompany(company);
+    public Company addCompany(@RequestBody CompanyRequestDTO companyRequestDTO) {
+        return companyService.addCompany(companyRequestDTO);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Company updateCompany(@PathVariable int id, @RequestBody Company companyInfo) {
+    public Company updateCompany(@PathVariable int id, @RequestBody CompanyRequestDTO companyInfo) {
         return companyService.updateCompany(id, companyInfo);
     }
 

@@ -1,5 +1,8 @@
 package com.thoughtworks.springbootemployee;
 
+import com.thoughtworks.springbootemployee.Exception.NotFoundCompanyException;
+import com.thoughtworks.springbootemployee.Mapper.RequestMapper;
+import com.thoughtworks.springbootemployee.dto.CompanyRequestDTO;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
@@ -18,13 +21,15 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CompanyServiceTest {
     @Mock
     private CompanyRepository companyRepository;
+    @Mock
+    private RequestMapper requestMapper;
     @InjectMocks
     private CompanyService companyService;
 
@@ -51,11 +56,11 @@ public class CompanyServiceTest {
     @Test
     void should_return_null_company_when_get_company_given_not_exist_company_id() {
         //given
-        when(companyRepository.findById(7)).thenReturn(null);
+        when(companyRepository.findById(7)).thenReturn(Optional.empty());
         //when
-        Company company = companyService.getCompany(7);
+        Throwable exception = assertThrows(NotFoundCompanyException.class, () -> companyService.getEmployees(7));
         //then
-        assertNull(company);
+        assertEquals("Not exist this company!", exception.getMessage());
     }
 
     @Test
@@ -71,10 +76,13 @@ public class CompanyServiceTest {
     @Test
     void should_return_company_when_add_company_given_company() {
         //given
+        CompanyRequestDTO companyRequestDTO = new CompanyRequestDTO("oocl", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)));
         Company company = new Company(1, "oocl", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)));
-        when(companyRepository.save(company)).thenReturn(new Company(1, "oocl", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0))));
+        when(requestMapper.toCompany(companyRequestDTO)).thenReturn(company);
+
+        when(companyRepository.save(company)).thenReturn(company);
         //when
-        Company savedCompany = companyService.addCompany(company);
+        Company savedCompany = companyService.addCompany(companyRequestDTO);
         //then
         assertEquals(1, savedCompany.getId());
     }
@@ -87,26 +95,15 @@ public class CompanyServiceTest {
         companyRepository.save(company);
 
         when(companyRepository.findById(1)).thenReturn(Optional.of(company));
+
+        CompanyRequestDTO companyRequestDTO = new CompanyRequestDTO("oocl", null);
+        when(requestMapper.toCompany(companyRequestDTO)).thenReturn(new Company("oocl", null));
+
         //when
-        Company updatedCompany = companyService.updateCompany(1, new Company(1, "oocl", null));
+        Company updatedCompany = companyService.updateCompany(1, companyRequestDTO);
         //then
         assertEquals(1, updatedCompany.getId());
         assertEquals("oocl", updatedCompany.getCompanyName());
-    }
-
-    @Test
-    void should_return_updated_company_when_update_company_given_id_and_no_updated_company_info() {
-        //given
-        Company company = new Company(1, "alibaba", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)));
-        when(companyRepository.save(company)).thenReturn(company);
-        companyRepository.save(company);
-
-        when(companyRepository.findById(1)).thenReturn(Optional.of(company));
-        //when
-        Company updatedCompany = companyService.updateCompany(1, new Company(1, null, null));
-        //then
-        assertEquals(1, updatedCompany.getId());
-        assertEquals("alibaba", updatedCompany.getCompanyName());
     }
 
     @Test
@@ -115,21 +112,40 @@ public class CompanyServiceTest {
         Company company = new Company(1, "oocl", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)));
         when(companyRepository.save(company)).thenReturn(company);
         companyRepository.save(company);
+
+        CompanyRequestDTO companyRequestDTO = new CompanyRequestDTO(null, null);
+        when(requestMapper.toCompany(companyRequestDTO)).thenReturn(new Company(null, null));
+
         //when
-        when(companyRepository.findById(2)).thenReturn(null);
-        Company updatedCompany = companyService.updateCompany(2, new Company(2, null, null));
+        when(companyRepository.findById(2)).thenReturn(Optional.empty());
+        Throwable exception = assertThrows(NotFoundCompanyException.class, () -> companyService.updateCompany(2, companyRequestDTO));
         //then
-        assertNull(updatedCompany);
+        assertEquals("Not exist this company!", exception.getMessage());
     }
 
     @Test
     void should_return_void_when_delete_company_given_company_id() {
         //given
-        int companyId = 1;
+        Company company = new Company(1, "oocl", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)));
+        when(companyRepository.save(company)).thenReturn(company);
+        Company savedCompany = companyRepository.save(company);
+
+        when(companyRepository.existsById(1)).thenReturn(true);
+        int companyId = savedCompany.getId();
         //when
         companyService.deleteCompanyById(companyId);
         //then
         verify(companyRepository, times(1)).deleteById(1);
+    }
+
+    @Test
+    void should_throw_not_found_company_exception_when_delete_company_given_not_exist_company_id() {
+        //given
+        when(companyRepository.existsById(7)).thenReturn(false);
+        //when
+        Throwable exception = assertThrows(NotFoundCompanyException.class, () -> companyService.deleteCompanyById(7));
+        //then
+        assertEquals("Not exist this company!", exception.getMessage());
     }
 
     @Test
