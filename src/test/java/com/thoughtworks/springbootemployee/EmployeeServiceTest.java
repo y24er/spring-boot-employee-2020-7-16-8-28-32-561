@@ -37,6 +37,7 @@ public class EmployeeServiceTest {
     @BeforeEach
     void addCompany() {
         companyRepository.save(new Company(1, "oocl", Collections.emptyList()));
+        when(companyRepository.existsById(1)).thenReturn(true);
     }
 
     @Test
@@ -108,7 +109,11 @@ public class EmployeeServiceTest {
     @Test
     void should_return_employee_when_delete_given_employee_id() {
         //given
-        int employee_id = 1;
+        Employee employee = new Employee(1, "oocl1", 18, "female", 10000.0, 1);
+        when(employeeRepository.save(employee)).thenReturn(employee);
+        Employee savedEmployee = employeeRepository.save(employee);
+        int employee_id = savedEmployee.getId();
+        when(employeeRepository.existsById(employee_id)).thenReturn(true);
         //when
         employeeService.deleteEmployee(employee_id);
         //then

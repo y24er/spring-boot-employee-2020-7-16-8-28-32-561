@@ -46,11 +46,7 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(int employeeID, Employee employee) {
-        Optional result = employeeRepository.findById(employeeID);
-        if (!result.isPresent()) {
-            throw new NotFoundEmployeeException();
-        }
-        Employee oldEmployee = (Employee) result.get();
+        Employee oldEmployee = employeeRepository.findById(employeeID).orElseThrow(()->{throw new NotFoundEmployeeException();});
         if (employee.getName() != null) {
             oldEmployee.setName(employee.getName());
         }
