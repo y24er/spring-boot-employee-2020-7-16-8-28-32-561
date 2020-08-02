@@ -30,7 +30,7 @@ public class EmployeeController {
     @GetMapping(params = {"page", "pageSize"})
     @ResponseStatus(HttpStatus.OK)
     public Page<Employee> getEmployeesByPage(Integer page, Integer pageSize) {
-        if (page != 0 && pageSize != 0) {
+        if (page != null && pageSize != null) {
             return employeeService.getEmployeeByPage(page, pageSize);
         } else {
             return new PageImpl<>(employeeService.getAllEmployees());

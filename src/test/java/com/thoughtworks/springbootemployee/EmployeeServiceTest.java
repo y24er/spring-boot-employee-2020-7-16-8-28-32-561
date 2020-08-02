@@ -36,7 +36,7 @@ public class EmployeeServiceTest {
 
     @BeforeEach
     void addCompany() {
-        companyRepository.save(new Company(1, "oocl", 2000, Collections.emptyList()));
+        companyRepository.save(new Company(1, "oocl", Collections.emptyList()));
     }
 
     @Test
