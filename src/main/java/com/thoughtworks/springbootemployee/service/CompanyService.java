@@ -1,15 +1,18 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.Exception.NotFoundCompanyException;
-import com.thoughtworks.springbootemployee.Mapper.RequestMapper;
 import com.thoughtworks.springbootemployee.dto.CompanyRequestDTO;
+import com.thoughtworks.springbootemployee.dto.CompanyResponseDTO;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
+import com.thoughtworks.springbootemployee.mapper.RequestMapper;
+import com.thoughtworks.springbootemployee.mapper.ResponseMapper;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -17,16 +20,22 @@ import java.util.Optional;
 @Service
 public class CompanyService {
     private CompanyRepository companyRepository;
-    //    @Autowired
     private RequestMapper requestMapper;
+    private ResponseMapper responseMapper;
 
-    public CompanyService(CompanyRepository companyRepository, RequestMapper requestMapper) {
+    public CompanyService(CompanyRepository companyRepository, RequestMapper requestMapper, ResponseMapper responseMapper) {
         this.companyRepository = companyRepository;
         this.requestMapper = requestMapper;
+        this.responseMapper = responseMapper;
     }
 
-    public List<Company> getCompanies() {
-        return companyRepository.findAll();
+    public List<CompanyResponseDTO> getCompanies() {
+        List<Company> companies = companyRepository.findAll();
+        List<CompanyResponseDTO> companyResponseDTOS = new ArrayList<>();
+        for (Company company : companies) {
+            companyResponseDTOS.add(responseMapper.toCompanyResponseDTO(company));
+        }
+        return companyResponseDTOS;
     }
 
     public Company getCompany(int ID) {

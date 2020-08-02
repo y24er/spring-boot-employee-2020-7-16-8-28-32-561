@@ -1,10 +1,12 @@
 package com.thoughtworks.springbootemployee;
 
 import com.thoughtworks.springbootemployee.Exception.NotFoundCompanyException;
-import com.thoughtworks.springbootemployee.Mapper.RequestMapper;
 import com.thoughtworks.springbootemployee.dto.CompanyRequestDTO;
+import com.thoughtworks.springbootemployee.dto.CompanyResponseDTO;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
+import com.thoughtworks.springbootemployee.mapper.RequestMapper;
+import com.thoughtworks.springbootemployee.mapper.ResponseMapper;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.junit.jupiter.api.Test;
@@ -30,17 +32,22 @@ public class CompanyServiceTest {
     private CompanyRepository companyRepository;
     @Mock
     private RequestMapper requestMapper;
+    @Mock
+    private ResponseMapper responseMapper;
     @InjectMocks
     private CompanyService companyService;
 
     @Test
     void should_return_companies_when_get_companies() {
         //given
-        when(companyRepository.findAll()).thenReturn(asList(new Company(1, "oocl", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)))));
+        List<Company> companies = asList(new Company(1, "oocl", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0))));
+        when(companyRepository.findAll()).thenReturn(companies);
+
+        when(responseMapper.toCompanyResponseDTO(companies.get(0))).thenReturn(new CompanyResponseDTO(1, "oocl", asList("alibaba1", "alibaba2")));
         //when
-        List<Company> companies = companyService.getCompanies();
+        List<CompanyResponseDTO> companyResponseDTOs = companyService.getCompanies();
         //then
-        assertEquals(1, companies.size());
+        assertEquals(1, companyResponseDTOs.size());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.dto.CompanyRequestDTO;
+import com.thoughtworks.springbootemployee.dto.CompanyResponseDTO;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
@@ -20,7 +21,7 @@ public class CompanyController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Company> getCompanies(Integer page, Integer pageSize) {
+        public List<CompanyResponseDTO> getCompanies(Integer page, Integer pageSize) {
         if (page != null && pageSize != null) {
             return companyService.getCompaniesByPage(page, pageSize).toList();
         }
