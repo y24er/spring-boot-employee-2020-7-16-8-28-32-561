@@ -18,6 +18,7 @@ public class CompanyController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<Company> getCompanies(Integer page, Integer pageSize) {
         if (page != null && pageSize != null) {
             return companyService.getCompaniesByPage(page, pageSize).toList();
@@ -26,11 +27,14 @@ public class CompanyController {
     }
 
     @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Company getCompany(@PathVariable int id) {
         return companyService.getCompany(id);
     }
 
     @GetMapping("{id}/employees")
+    @ResponseStatus(HttpStatus.OK)
+
     public List<Employee> getEmployeesOfCompany(@PathVariable int id) {
         return companyService.getEmployees(id);
     }
@@ -42,7 +46,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public Company updateCompany(@PathVariable int id, @RequestBody Company companyInfo) {
         return companyService.updateCompany(id, companyInfo);
     }

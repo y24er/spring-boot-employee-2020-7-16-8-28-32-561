@@ -11,11 +11,17 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String companyName;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "companyId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "companyId")
     private List<Employee> employees;
+
 
     public Company(int id, String companyName, List<Employee> employees) {
         this.id = id;
+        this.companyName = companyName;
+        this.employees = employees;
+    }
+
+    public Company(String companyName, List<Employee> employees) {
         this.companyName = companyName;
         this.employees = employees;
     }
