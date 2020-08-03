@@ -5,8 +5,7 @@ import com.thoughtworks.springbootemployee.dto.CompanyRequestDTO;
 import com.thoughtworks.springbootemployee.dto.CompanyResponseDTO;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
-import com.thoughtworks.springbootemployee.mapper.RequestMapper;
-import com.thoughtworks.springbootemployee.mapper.ResponseMapper;
+import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,20 +19,17 @@ import java.util.Optional;
 @Service
 public class CompanyService {
     private CompanyRepository companyRepository;
-    private RequestMapper requestMapper;
-    private ResponseMapper responseMapper;
-
-    public CompanyService(CompanyRepository companyRepository, RequestMapper requestMapper, ResponseMapper responseMapper) {
+    private CompanyMapper companyMapper;
+    public CompanyService(CompanyRepository companyRepository, CompanyMapper companyMapper) {
         this.companyRepository = companyRepository;
-        this.requestMapper = requestMapper;
-        this.responseMapper = responseMapper;
+        this.companyMapper = companyMapper;
     }
 
     public List<CompanyResponseDTO> getCompanies() {
         List<Company> companies = companyRepository.findAll();
         List<CompanyResponseDTO> companyResponseDTOS = new ArrayList<>();
         for (Company company : companies) {
-            companyResponseDTOS.add(responseMapper.toCompanyResponseDTO(company));
+            companyResponseDTOS.add(companyMapper.toCompanyResponseDTO(company));
         }
         return companyResponseDTOS;
     }
@@ -55,7 +51,7 @@ public class CompanyService {
     }
 
     public CompanyResponseDTO addCompany(CompanyRequestDTO companyRequestDTO) {
-        Company company = requestMapper.toCompany(companyRequestDTO);
+        Company company = companyMapper.toCompany(companyRequestDTO);
         List<Employee> employees = company.getEmployees();
         company.setEmployees(Collections.emptyList());
         Company savedCompany = companyRepository.save(company);
@@ -64,12 +60,12 @@ public class CompanyService {
         }
         savedCompany.setEmployees(employees);
         Company company1 = companyRepository.save(savedCompany);
-        return responseMapper.toCompanyResponseDTO(company1);
+        return companyMapper.toCompanyResponseDTO(company1);
 
     }
 
     public Company updateCompany(Integer companyId, CompanyRequestDTO companyRequestDTO) {
-        Company company = requestMapper.toCompany(companyRequestDTO);
+        Company company = companyMapper.toCompany(companyRequestDTO);
         Company oldCompany = companyRepository.findById(companyId).orElseThrow(() -> {
             throw new NotFoundCompanyException();
         });

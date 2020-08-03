@@ -5,10 +5,8 @@ import com.thoughtworks.springbootemployee.dto.CompanyRequestDTO;
 import com.thoughtworks.springbootemployee.dto.CompanyResponseDTO;
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
-import com.thoughtworks.springbootemployee.mapper.RequestMapper;
-import com.thoughtworks.springbootemployee.mapper.ResponseMapper;
+import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
-import com.thoughtworks.springbootemployee.service.CompanyService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,9 +29,7 @@ public class CompanyServiceTest {
     @Mock
     private CompanyRepository companyRepository;
     @Mock
-    private RequestMapper requestMapper;
-    @Mock
-    private ResponseMapper responseMapper;
+    private CompanyMapper companyMapper;
     @InjectMocks
     private CompanyService companyService;
 
@@ -43,7 +39,7 @@ public class CompanyServiceTest {
         List<Company> companies = asList(new Company(1, "oocl", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0))));
         when(companyRepository.findAll()).thenReturn(companies);
 
-        when(responseMapper.toCompanyResponseDTO(companies.get(0))).thenReturn(new CompanyResponseDTO(1, "oocl", asList("alibaba1", "alibaba2")));
+        when(companyMapper.toCompanyResponseDTO(companies.get(0))).thenReturn(new CompanyResponseDTO(1, "oocl", asList("alibaba1", "alibaba2")));
         //when
         List<CompanyResponseDTO> companyResponseDTOs = companyService.getCompanies();
         //then
@@ -86,9 +82,9 @@ public class CompanyServiceTest {
         CompanyRequestDTO companyRequestDTO = new CompanyRequestDTO("oocl", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)));
         CompanyResponseDTO companyResponseDTO =new CompanyResponseDTO(1,"oocl",asList("alibaba1","alibaba2"));
         Company company = new Company(1, "oocl", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)));
-        when(requestMapper.toCompany(companyRequestDTO)).thenReturn(company);
+        when(companyMapper.toCompany(companyRequestDTO)).thenReturn(company);
         when(companyRepository.save(company)).thenReturn(company);
-        when(responseMapper.toCompanyResponseDTO(company)).thenReturn(companyResponseDTO);
+        when(companyMapper.toCompanyResponseDTO(company)).thenReturn(companyResponseDTO);
 
         //when
         CompanyResponseDTO savedCompany = companyService.addCompany(companyRequestDTO);
@@ -106,7 +102,7 @@ public class CompanyServiceTest {
         when(companyRepository.findById(1)).thenReturn(Optional.of(company));
 
         CompanyRequestDTO companyRequestDTO = new CompanyRequestDTO("oocl", null);
-        when(requestMapper.toCompany(companyRequestDTO)).thenReturn(new Company("oocl", null));
+        when(companyMapper.toCompany(companyRequestDTO)).thenReturn(new Company("oocl", null));
 
         //when
         Company updatedCompany = companyService.updateCompany(1, companyRequestDTO);
@@ -123,7 +119,7 @@ public class CompanyServiceTest {
         companyRepository.save(company);
 
         CompanyRequestDTO companyRequestDTO = new CompanyRequestDTO(null, null);
-        when(requestMapper.toCompany(companyRequestDTO)).thenReturn(new Company(null, null));
+        when(companyMapper.toCompany(companyRequestDTO)).thenReturn(new Company(null, null));
 
         //when
         when(companyRepository.findById(2)).thenReturn(Optional.empty());
