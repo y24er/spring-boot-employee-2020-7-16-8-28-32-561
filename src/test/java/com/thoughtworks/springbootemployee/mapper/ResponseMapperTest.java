@@ -1,4 +1,4 @@
-package com.thoughtworks.springbootemployee;
+package com.thoughtworks.springbootemployee.mapper;
 
 import com.thoughtworks.springbootemployee.dto.CompanyResponseDTO;
 import com.thoughtworks.springbootemployee.entity.Company;
