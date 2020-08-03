@@ -43,7 +43,7 @@ public class CompanyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Company addCompany(@RequestBody CompanyRequestDTO companyRequestDTO) {
+    public CompanyResponseDTO addCompany(@RequestBody CompanyRequestDTO companyRequestDTO) {
         return companyService.addCompany(companyRequestDTO);
     }
 
