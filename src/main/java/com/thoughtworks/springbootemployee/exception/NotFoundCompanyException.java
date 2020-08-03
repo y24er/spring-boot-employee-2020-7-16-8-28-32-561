@@ -1,4 +1,4 @@
-package com.thoughtworks.springbootemployee.Exception;
+package com.thoughtworks.springbootemployee.exception;
 
 public class NotFoundCompanyException extends RuntimeException {
     public String getMessage() {
