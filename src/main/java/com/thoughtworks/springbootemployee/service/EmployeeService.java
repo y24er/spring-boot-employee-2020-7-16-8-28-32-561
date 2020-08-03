@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.Exception.NotFoundEmployeeException;
+import com.thoughtworks.springbootemployee.exception.NotFoundCompanyException;
+import com.thoughtworks.springbootemployee.exception.NotFoundEmployeeException;
 import com.thoughtworks.springbootemployee.entity.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
@@ -36,7 +37,7 @@ public class EmployeeService {
     public Employee addEmployee(Employee employee) {
         int companyId = employee.getCompanyId();
         if (!companyRepository.existsById(companyId)) {
-            throw new NotFoundEmployeeException();
+            throw new NotFoundCompanyException();
         }
         return employeeRepository.save(employee);
     }

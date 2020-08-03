@@ -2,6 +2,7 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.entity.Company;
 import com.thoughtworks.springbootemployee.entity.Employee;
+import com.thoughtworks.springbootemployee.exception.NotFoundEmployeeException;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,7 +37,6 @@ public class EmployeeServiceTest {
     @BeforeEach
     void addCompany() {
         companyRepository.save(new Company(1, "oocl", Collections.emptyList()));
-        when(companyRepository.existsById(1)).thenReturn(true);
     }
 
     @Test
@@ -64,6 +64,7 @@ public class EmployeeServiceTest {
         //given
         Employee employee = new Employee(1, "oocl1", 18, "female", 10000.0, 1);
         when(employeeRepository.save(employee)).thenReturn(employee);
+        when(companyRepository.existsById(1)).thenReturn(true);
         //when
         Employee savedEmployee = employeeService.addEmployee(employee);
         //then
@@ -98,11 +99,11 @@ public class EmployeeServiceTest {
     @Test
     void should_return_null_when_update_given_employee_id_is_not_found_and_employee_info() {
         //given
-        when(employeeRepository.findById(4)).thenReturn(null);
+        when(employeeRepository.findById(4)).thenReturn(Optional.empty());
         //when
-        Employee updatedEmployee = employeeService.updateEmployee(4, new Employee(4, "oocl1", 20, "female", 20000.0));
+        Throwable exception = assertThrows(NotFoundEmployeeException.class, () -> employeeService.updateEmployee(4, new Employee(4, "oocl1", 20, "female", 20000.0)));
         //then
-        assertNull(updatedEmployee);
+        assertEquals("Not exist this employee!", exception.getMessage());
     }
 
     @Test
