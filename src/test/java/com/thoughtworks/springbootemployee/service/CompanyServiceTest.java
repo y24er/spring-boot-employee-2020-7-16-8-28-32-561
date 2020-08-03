@@ -1,6 +1,6 @@
-package com.thoughtworks.springbootemployee;
+package com.thoughtworks.springbootemployee.service;
 
-import com.thoughtworks.springbootemployee.Exception.NotFoundCompanyException;
+import com.thoughtworks.springbootemployee.exception.NotFoundCompanyException;
 import com.thoughtworks.springbootemployee.dto.CompanyRequestDTO;
 import com.thoughtworks.springbootemployee.dto.CompanyResponseDTO;
 import com.thoughtworks.springbootemployee.entity.Company;
@@ -84,12 +84,14 @@ public class CompanyServiceTest {
     void should_return_company_when_add_company_given_company() {
         //given
         CompanyRequestDTO companyRequestDTO = new CompanyRequestDTO("oocl", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)));
+        CompanyResponseDTO companyResponseDTO =new CompanyResponseDTO(1,"oocl",asList("alibaba1","alibaba2"));
         Company company = new Company(1, "oocl", asList(new Employee(1, "alibaba1", 20, "male", 6000.0), new Employee(2, "alibaba2", 19, "male", 8000.0)));
         when(requestMapper.toCompany(companyRequestDTO)).thenReturn(company);
-
         when(companyRepository.save(company)).thenReturn(company);
+        when(responseMapper.toCompanyResponseDTO(company)).thenReturn(companyResponseDTO);
+
         //when
-        Company savedCompany = companyService.addCompany(companyRequestDTO);
+        CompanyResponseDTO savedCompany = companyService.addCompany(companyRequestDTO);
         //then
         assertEquals(1, savedCompany.getId());
     }
