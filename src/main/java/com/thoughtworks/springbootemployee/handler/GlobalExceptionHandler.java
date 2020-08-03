@@ -1,7 +1,7 @@
 package com.thoughtworks.springbootemployee.handler;
 
-import com.thoughtworks.springbootemployee.Exception.NotFoundCompanyException;
-import com.thoughtworks.springbootemployee.Exception.NotFoundEmployeeException;
+import com.thoughtworks.springbootemployee.exception.NotFoundCompanyException;
+import com.thoughtworks.springbootemployee.exception.NotFoundEmployeeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
