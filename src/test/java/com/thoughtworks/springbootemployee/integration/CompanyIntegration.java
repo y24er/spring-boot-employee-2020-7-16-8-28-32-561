@@ -107,9 +107,8 @@ public class CompanyIntegration {
                 .andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
         //then
         assertTrue(responseContentAsString.contains("oocl"));
-//        System.out.println(responseContentAsString);
         JSONObject jsonObject = JSONArray.parseObject(responseContentAsString);
-        List<Employee> employees = JSONArray.parseArray(jsonObject.get("employees").toString(), Employee.class);
+        List<String> employees = JSONArray.parseArray(jsonObject.get("employeesName").toString(), String.class);
         assertEquals(1, employees.size());
     }
 
